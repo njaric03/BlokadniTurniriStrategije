@@ -1,72 +1,61 @@
 import tkinter as tk
-from tkinter import ttk
+from .shared_style import Style
+from .game_screen import GameScreen
 
 class MenuScreen:
     def __init__(self, root):
         self.root = root
-        self.root.title("Prisoner's Dilemma")
-        
-        # Configure theme colors
-        self.colors = {
-            'bg': '#1E2337',           # Dark blue background
-            'button': '#2A3F54',       # Button color
-            'button_hover': '#3C5876', # Button hover color
-            'text': '#E0E7FF'          # Light text color
-        }
+        self.root.title("Blokadni poker")
         
         # Configure window
-        self.root.configure(bg=self.colors['bg'])
+        self.root.configure(bg=Style.COLORS['bg'])
         screen_width = root.winfo_screenwidth()
         screen_height = root.winfo_screenheight()
         self.root.geometry(f"{screen_width}x{screen_height}")
         
-        # Create main frame
-        main_frame = tk.Frame(root, bg=self.colors['bg'], padx=40, pady=40)
-        main_frame.place(relx=0.5, rely=0.5, anchor="center")
+        # Configure grid weights for centering
+        self.root.grid_rowconfigure(0, weight=1)
+        self.root.grid_rowconfigure(1, weight=1)
+        self.root.grid_columnconfigure(0, weight=1)
         
-        # Title with custom font and styling
+        # Create main frame
+        main_frame = tk.Frame(root, bg=Style.COLORS['bg'])
+        main_frame.grid(row=0, column=0, sticky="nsew")
+        
+        # Configure main frame grid
+        main_frame.grid_rowconfigure(0, weight=1)
+        main_frame.grid_rowconfigure(1, weight=0)  # Title
+        main_frame.grid_rowconfigure(2, weight=0)  # Subtitle
+        main_frame.grid_rowconfigure(3, weight=0)  # Button
+        main_frame.grid_rowconfigure(4, weight=1)
+        main_frame.grid_columnconfigure(0, weight=1)
+        
+        # Title
         title = tk.Label(main_frame,
-                        text="Prisoner's Dilemma",
-                        font=('Segoe UI', 42, 'bold'),
-                        fg=self.colors['text'],
-                        bg=self.colors['bg'])
-        title.pack(pady=(0, 10))
+                        text="Blokadni Poker",
+                        font=Style.FONTS['title'],
+                        fg=Style.COLORS['text'],
+                        bg=Style.COLORS['bg'])
+        title.grid(row=1, column=0, pady=(0, 10))
         
         # Subtitle
         subtitle = tk.Label(main_frame,
                           text="Simulator",
-                          font=('Segoe UI Light', 24),
-                          fg=self.colors['text'],
-                          bg=self.colors['bg'])
-        subtitle.pack(pady=(0, 40))
+                          font=Style.FONTS['subtitle'],
+                          fg=Style.COLORS['text'],
+                          bg=Style.COLORS['bg'])
+        subtitle.grid(row=2, column=0, pady=(0, 40))
         
-        # Button style configuration
-        button_style = {
-            'font': ('Segoe UI', 12),
-            'bg': self.colors['button'],
-            'fg': self.colors['text'],
-            'activebackground': self.colors['button_hover'],
-            'activeforeground': self.colors['text'],
-            'width': 30,
-            'height': 2,
-            'bd': 0,
-            'cursor': 'hand2'
-        }
+        # Start Game button
+        start_btn = tk.Button(main_frame, 
+                            text="Start Game", 
+                            command=self.start_game, 
+                            **Style.button_style())
+        start_btn.grid(row=3, column=0)
         
-        # Create buttons with hover effect
-        buttons = [
-            ("Start Game", self.start_game),
-            ("Start Tournament", self.start_tournament),
-            ("Test Against Multiple Opponents", self.test_multiple),
-            ("Exit", root.quit)
-        ]
-        
-        for text, command in buttons:
-            btn = tk.Button(main_frame, text=text, command=command, **button_style)
-            btn.pack(pady=8)
-            # Add hover effects
-            btn.bind('<Enter>', lambda e, b=btn: b.configure(bg=self.colors['button_hover']))
-            btn.bind('<Leave>', lambda e, b=btn: b.configure(bg=self.colors['button']))
+        # Add hover effect
+        start_btn.bind('<Enter>', lambda e: start_btn.configure(bg=Style.COLORS['button_hover']))
+        start_btn.bind('<Leave>', lambda e: start_btn.configure(bg=Style.COLORS['button']))
 
     def clear_window(self):
         for widget in self.root.winfo_children():
@@ -74,15 +63,10 @@ class MenuScreen:
 
     def start_game(self):
         self.clear_window()
-        from .game_screen import GameScreen  # Import here instead
         GameScreen(self.root)
 
     def start_tournament(self):
-        self.clear_window()
-        from .tournament_screen import TournamentScreen  # Import here instead
-        TournamentScreen(self.root)
+        pass
 
     def test_multiple(self):
-        self.clear_window()
-        from .multiple_test_screen import MultipleTestScreen  # Import here instead
-        MultipleTestScreen(self.root)
+        pass
