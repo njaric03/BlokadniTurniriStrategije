@@ -9,6 +9,10 @@ class PokerAction(Enum):
     RAISE = 2
 
 class AbstractBot(Player, ABC):
+    @property
+    def description(self):
+        return ""
+        
     # Constants for simple actions that don't need chip amounts
     FOLD = (PokerAction.FOLD, 0)
     CALL = (PokerAction.CALL, None)  # None means "whatever the current bet is"

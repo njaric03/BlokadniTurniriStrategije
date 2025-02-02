@@ -1,6 +1,10 @@
 from bots.abstract_bot import AbstractBot, PokerAction
 
 class AlwaysCallBot(AbstractBot):
+    @property
+    def description(self):
+        return "A simple bot that always calls if it has enough chips, otherwise folds."
+        
     def strategy(self, community_cards, pot, current_bet, min_raise, max_raise, opponent_chips, previous_bets=[]):
         # If we have enough chips to call, always call
         if self.chips >= current_bet:

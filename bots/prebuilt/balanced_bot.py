@@ -2,6 +2,10 @@ from bots.abstract_bot import AbstractBot, PokerAction
 import random
 
 class BalancedBot(AbstractBot):
+    @property
+    def description(self):
+        return "A balanced bot that mixes its strategy between aggressive and conservative play, with some randomization to be less predictable."
+        
     def strategy(self, community_cards, pot, current_bet, min_raise, max_raise, opponent_chips, previous_bets=[]):
         hand_strength = self._evaluate_hand_strength(self.hand, community_cards)
         pot_odds = current_bet / (pot + current_bet) if current_bet > 0 else 0

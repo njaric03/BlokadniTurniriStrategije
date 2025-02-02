@@ -2,6 +2,10 @@ from bots.abstract_bot import AbstractBot, PokerAction  # Changed to absolute im
 import random
 
 class ConservativeBot(AbstractBot):
+    @property
+    def description(self):
+        return "A cautious bot that only plays strong hands and folds when there's aggressive betting."
+        
     def strategy(self, community_cards, pot, current_bet, min_raise, max_raise, opponent_chips, previous_bets=[]):
         hand_strength = self._evaluate_hand_strength(self.hand, community_cards)
         pot_odds = current_bet / (pot + current_bet) if current_bet > 0 else 0
